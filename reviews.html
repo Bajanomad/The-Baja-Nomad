@@ -84,54 +84,19 @@
       box-shadow: 0 0 20px #2ecc40cc;
     }
 
-    @keyframes flicker {
-      0%, 100% {
-        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
-        opacity: 1;
-      }
-      50% {
-        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
-        opacity: 0.8;
-      }
-      70% {
-        text-shadow: none;
-        opacity: 0.6;
-      }
+    .home-icon {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      z-index: 999;
+      background: black;
+      border: 2px solid #39ff14;
+      border-radius: 50%;
+      padding: 5px;
+      box-shadow: 0 0 10px #39ff14aa;
+      transition: transform 0.2s ease-in-out;
     }
-  </style>
-</head>
-<body>
-  <div class="content">
-    <header>Leave a Review</header>
-    <p class="description">Tell it like it is. We love the praise, but we can take a punch too.</p>
 
-    <form action="https://formspree.io/f/xanbypng" method="POST">
-      <!-- Name -->
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name" placeholder="Your name..." required />
-
-      <!-- Email -->
-      <label for="email">Email</label>
-      <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
-
-      <!-- Rating -->
-      <label for="rating">Rating</label>
-      <select name="rating" id="rating" required>
-        <option value="">Select one</option>
-        <option>⭐️⭐️⭐️⭐️⭐️ - Flawless</option>
-        <option>⭐️⭐️⭐️⭐️ - Damn good</option>
-        <option>⭐️⭐️⭐️ - Solid</option>
-        <option>⭐️⭐️ - Meh</option>
-        <option>⭐️ - Total dumpster fire</option>
-      </select>
-
-      <!-- Message -->
-      <label for="message">Message</label>
-      <textarea name="message" id="message" rows="5" placeholder="Let it rip..." required></textarea>
-
-      <!-- Submit -->
-      <button type="submit">Submit Review</button>
-    </form>
-  </div>
-</body>
-</html>
+    .home-icon
