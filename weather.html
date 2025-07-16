@@ -83,44 +83,16 @@
       filter: drop-shadow(0 0 2px #39ff14);
     }
 
-    /* ===== WEATHER CARD ===== */
-    .weather-card {
-      background: rgba(0, 0, 0, 0.85);
+    /* ===== WIDGET CONTAINER ===== */
+    .widget-container {
+      background: rgba(0,0,0,0.85);
+      padding: 2rem 3rem;
       border: 2px solid #39ff14;
       border-radius: 12px;
       box-shadow: 0 0 15px #39ff14aa;
-      padding: 2rem 3rem;
       max-width: 400px;
       width: 100%;
-      color: #39ff14;
-      font-family: 'Share Tech Mono', monospace;
       text-align: center;
-    }
-    .weather-card h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 6px #39ff14;
-    }
-    .weather-info {
-      font-size: 1.2rem;
-      margin-top: 0.75rem;
-      text-transform: capitalize;
-    }
-    .temp {
-      font-size: 3rem;
-      font-weight: bold;
-      margin: 1rem 0;
-    }
-    .icon {
-      width: 100px;
-      height: 100px;
-    }
-    .error {
-      color: #ff3300;
-      font-weight: bold;
-      margin-top: 2rem;
-      font-size: 1.1rem;
     }
   </style>
 </head>
@@ -138,9 +110,8 @@
   <div class="content">
     <header>Todos Santos Weather - The Baja Nomad</header>
 
-    <div id="weather-container" class="weather-card">
-      <!-- Weather info injected here -->
-      <p>Loading weather data...</p>
+    <div class="widget-container">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/23d44n110d26/todos-santos/?unit=us" data-label_1="Todos Santos" data-label_2="WEATHER" data-font="Open Sans" data-icons="Climacons Animated" data-theme="dark" data-textcolor="#d0fb30" >Todos Santos WEATHER</a>
     </div>
   </div>
 
@@ -182,56 +153,17 @@
       canvas.height = window.innerHeight;
     });
 
-    /* WEATHER FETCH & DISPLAY FOR TODOS SANTOS */
-    const API_KEY = '83eb796ba7e9c535e1f1b3a79bdfc40c';
-    const city = { name: "Todos Santos", lat: 23.4453, lon: -110.2656 };
-    const container = document.getElementById('weather-container');
-
-    function kelvinToCelsius(k) {
-      return (k - 273.15).toFixed(1);
-    }
-    function kelvinToFahrenheit(k) {
-      return ((k - 273.15) * 9/5 + 32).toFixed(1);
-    }
-
-    async function fetchWeather() {
-      try {
-        const res = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${city.lat}&lon=${city.lon}&appid=${API_KEY}`
-        );
-        if(!res.ok) throw new Error('Network response not ok');
-        const data = await res.json();
-        return data;
-      } catch (e) {
-        return { error: true, message: e.message };
+    /* WEATHERWIDGET.IO SCRIPT */
+    !function(d,s,id){
+      var js,fjs=d.getElementsByTagName(s)[0];
+      if(!d.getElementById(id)){
+        js=d.createElement(s);
+        js.id=id;
+        js.src='https://weatherwidget.io/js/widget.min.js';
+        fjs.parentNode.insertBefore(js,fjs);
       }
-    }
-
-    function displayWeather(data) {
-      if(data.error) {
-        container.innerHTML = `<p class="error">Failed to load weather: ${data.message}</p>`;
-        return;
-      }
-
-      const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-
-      container.innerHTML = `
-        <h2>${city.name}</h2>
-        <img class="icon" src="${iconUrl}" alt="${data.weather[0].description}" />
-        <div class="temp">${kelvinToCelsius(data.main.temp)}°C / ${kelvinToFahrenheit(data.main.temp)}°F</div>
-        <div class="weather-info">${data.weather[0].description}</div>
-        <div class="weather-info">Humidity: ${data.main.humidity}%</div>
-        <div class="weather-info">Wind: ${data.wind.speed} m/s</div>
-      `;
-    }
-
-    async function loadWeather() {
-      container.innerHTML = '<p>Loading weather data...</p>';
-      const data = await fetchWeather();
-      displayWeather(data);
-    }
-
-    loadWeather();
+    }(document,'script','weatherwidget-io-js');
   </script>
+
 </body>
 </html>
