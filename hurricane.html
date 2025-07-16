@@ -1,68 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Baja Hurricane Tracker</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <title>🌀 Hurricane Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
   <style>
-    body { margin:0; font-family:sans-serif; background:#111; color:#eee; }
-    #map { width:100%; height:80vh; }
-    .widget { padding:10px; margin:10px; background:#222; border-radius:4px; }
-    .widget h2 { margin-top:0; }
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'VT323', monospace;
+    }
+    .frame {
+      border: 2px solid #00ff00;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 12px;
+      background-color: rgba(0, 255, 0, 0.05);
+      box-shadow: 0 0 15px #00ff00;
+    }
+    .titlebar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .back-btn {
+      text-decoration: none;
+      color: #00ff00;
+      font-size: 20px;
+      margin-right: 12px;
+      transition: transform 0.2s ease;
+    }
+    .back-btn:hover {
+      transform: scale(1.2);
+      text-shadow: 0 0 5px #00ff00;
+    }
+    h1 {
+      font-size: 28px;
+      margin: 0;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .tile {
+      position: relative;
+      background: #111;
+      border: 1px solid #00ff00;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 8px #00ff00;
+    }
+    .tile img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .tile .label {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      padding: 6px;
+      background: rgba(0, 255, 0, 0.2);
+      font-size: 16px;
+      text-align: center;
+    }
   </style>
+  <script>
+    const REFRESH = 10 * 60 * 1000;
+    function reloadImages() {
+      document.querySelectorAll('img').forEach(img => {
+        const src = img.dataset.src;
+        img.src = src + '?_=' + Date.now();
+      });
+    }
+    window.onload = () => {
+      reloadImages();
+      setInterval(reloadImages, REFRESH);
+    };
+  </script>
 </head>
 <body>
-
-  <div class="widget">
-    <h2>🌪️ Tropical Weather Outlook (Pacific)</h2>
-    <iframe src="https://www.nhc.noaa.gov/widgets/nhc_widget.shtml"
-      width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+  <div class="frame">
+    <div class="titlebar">
+      <a class="back-btn" href="home.html">⬅ BACK</a>
+      <h1>Hurricane Tracker Command</h1>
+    </div>
+    <div id="grid">
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=epac&fdays=2" alt="EPAC 2‑Day Outlook">
+        <div class="label">EPAC 2‑Day Outlook</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=epac&fdays=7" alt="EPAC 7‑Day Outlook">
+        <div class="label">EPAC 7‑Day Outlook</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=atlc&fdays=2" alt="ATL 2‑Day Outlook">
+        <div class="label">ATL 2‑Day Outlook</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=atlc&fdays=7" alt="ATL 7‑Day Outlook">
+        <div class="label">ATL 7‑Day Outlook</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_5day_cone_no_line.png" alt="5-Day Track Cone">
+        <div class="label">5‑Day Cone (EP02)</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_current_wind.png" alt="Current Wind Field">
+        <div class="label">Wind Field (EP02)</div>
+      </div>
+      <div class="tile">
+        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_wind_probs_34_Ffff.png" alt="Wind Probabilities">
+        <div class="label">Wind Prob 34kt (EP02)</div>
+      </div>
+    </div>
   </div>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([24.1, -110.3], 5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OSM contributors'
-    }).addTo(map);
-
-    // NOAA Tropical MapServer layers
-    const baseURL = 'https://mapservices.weather.noaa.gov/tropical/rest/services/tropical/NHC_tropical_weather/MapServer';
-    const layers = {
-      "2-day Outlook": 0,
-      "7-day Outlook": 1,
-      "Forecast Track": 3,
-      "Forecast Cone": 4,
-      "Past Track": 5,
-      "Wind Radii": 7,
-      "Forecast Wind Radii": 8
-    };
-
-    Object.entries(layers).forEach(([name, idx]) => {
-      L.tileLayer.wms(`${baseURL}/wmsserver`, {
-        layers: idx,
-        format: 'image/png',
-        transparent: true,
-        attribution: 'NOAA/NHC'
-      }).addTo(map).bindPopup(name);
-    });
-
-    // Optional: GeoJSON feed of active storms summary
-    fetch('https://www.nhc.noaa.gov/gis/forecast/active_storms.geojson')
-      .then(res => res.json())
-      .then(js => L.geoJSON(js, {
-        style: { color:'magenta', weight:2 },
-        onEachFeature: (f, l) => l.bindPopup(f.properties.name)
-      }).addTo(map));
-
-  </script>
-
-  <footer class="widget">
-    <h2>🛰️ Satellite & Radar</h2>
-    <p>Satellite imagery available through NOAA's NESDIS labs. Local radar tiles for La Paz/Cabo to be added via NWS OGC.</p>
-  </footer>
-
 </body>
 </html>
