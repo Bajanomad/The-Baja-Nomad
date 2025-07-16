@@ -8,7 +8,6 @@
   <!-- Google Fonts: Orbitron & Share Tech Mono -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
 
-  <!-- =========================== STYLES =========================== -->
   <style>
     * {
       box-sizing: border-box;
@@ -76,6 +75,13 @@
       margin-top: 1rem;
     }
 
+    @media (max-width: 500px) {
+      .button-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        justify-items: center;
+      }
+    }
+
     .icon-btn {
       width: 120px;
       height: 120px;
@@ -115,12 +121,6 @@
     .icon-btn:active {
       transform: scale(0.95);
       box-shadow: 0 0 10px #2ecc40aa, 0 0 20px #2ecc40aa;
-    }
-
-    @media (max-width: 600px) {
-      .button-grid {
-        grid-template-columns: repeat(1, 120px);
-      }
     }
   </style>
 </head>
