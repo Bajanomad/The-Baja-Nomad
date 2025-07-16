@@ -1,11 +1,13 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Local News - The Baja Nomad</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html, body {
       height: 100%;
       background: black;
@@ -13,7 +15,8 @@
       color: #39ff14;
       overflow-x: hidden;
     }
-    #matrix {
+
+    canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -22,6 +25,42 @@
       z-index: 0;
       pointer-events: none;
     }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      text-shadow: 0 0 8px #39ff14;
+      animation: flicker 2.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 100% {
+        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+        opacity: 1;
+      }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
+    }
+
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -31,147 +70,158 @@
       background: black;
       border: 2px solid #39ff14;
       border-radius: 50%;
+      box-shadow: 0 0 8px #39ff14aa;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 8px #39ff14aa;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
       z-index: 999;
+      text-decoration: none;
     }
+
+    .back-arrow:hover {
+      transform: scale(1.1);
+      border-color: #2ecc40;
+      box-shadow: 0 0 16px #2ecc40cc;
+    }
+
     .back-arrow img {
       width: 20px;
       height: 20px;
       filter: drop-shadow(0 0 2px #39ff14);
     }
-    .content-wrapper {
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      padding: 2rem;
-      background: rgba(0, 0, 0, 0.85);
+
+    .news-feed {
       width: 100%;
-    }
-    header {
-      font-size: 2.5rem;
-      font-family: 'Orbitron', sans-serif;
-      text-align: center;
+      max-width: 900px;
       margin-bottom: 2rem;
-      text-shadow: 0 0 8px #39ff14;
-    }
-    .rss-section {
-      margin-bottom: 2rem;
-      padding: 1rem;
       border: 2px solid #39ff14;
-      border-radius: 10px;
-      background: black;
-      box-shadow: 0 0 12px #39ff14aa;
+      border-radius: 12px;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 15px #39ff14aa;
     }
-    .rss-section h2 {
+
+    .news-feed h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
       color: #90ff46;
-      text-align: center;
+      text-shadow: 0 0 5px #39ff14aa;
     }
-    .rss-item {
+
+    .news-feed ul {
+      list-style: none;
+    }
+
+    .news-feed li {
       margin-bottom: 1rem;
     }
-    .rss-item a {
+
+    .news-feed a {
       color: #39ff14;
       text-decoration: none;
     }
-    .rss-item a:hover {
+
+    .news-feed a:hover {
       text-decoration: underline;
+      color: #2ecc40;
     }
   </style>
 </head>
-<body><canvas id="matrix"></canvas>
+<body>
 
-  <a href="index.html" class="back-arrow">
+  <canvas id="matrix"></canvas>
+
+  <a href="index.html" title="Back to Main" class="back-arrow">
     <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
-  </a>  <div class="content-wrapper">
-    <header>Local News</header><!-- Gringo Gazette Feed -->
-<div class="rss-section">
-  <h2>Gringo Gazette</h2>
-  <div id="gringo-feed"></div>
-</div>
+  </a>
 
-<!-- Cabo San Lucas Feed Placeholder -->
-<div class="rss-section">
-  <h2>Cabo San Lucas News</h2>
-  <div id="cabo-feed"></div>
-</div>
+  <div class="content">
+    <header>Local News</header>
 
-<!-- La Paz Feed Placeholder -->
-<div class="rss-section">
-  <h2>La Paz News</h2>
-  <div id="lapaz-feed"></div>
-</div>
+    <div class="news-feed" id="gringo">
+      <h2>Gringo Gazette</h2>
+      <ul id="gringo-news">Loading Gringo Gazette...</ul>
+    </div>
 
-  </div>  <script>
+    <div class="news-feed" id="cabo">
+      <h2>Cabo News Today</h2>
+      <ul id="cabo-news">Loading Cabo News Today...</ul>
+    </div>
+
+    <div class="news-feed" id="baja">
+      <h2>Baja Insider</h2>
+      <ul id="baja-news">Loading Baja Insider...</ul>
+    </div>
+  </div>
+
+  <script>
     const feeds = [
       {
-        id: 'gringo-feed',
-        url: 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.gringogazette.com%2Ffeed'
+        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.gringogazette.com%2Ffeed",
+        target: "gringo-news"
       },
       {
-        id: 'cabo-feed',
-        url: 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fbajasur.news%2Fcabo-san-lucas%2Frss'
+        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fcabonewstoday.com%2Ffeed",
+        target: "cabo-news"
       },
       {
-        id: 'lapaz-feed',
-        url: 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fbajasur.news%2Fla-paz%2Frss'
+        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fbajainsider.com%2Ffeed",
+        target: "baja-news"
       }
     ];
 
     feeds.forEach(feed => {
       fetch(feed.url)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(data => {
-          const container = document.getElementById(feed.id);
-          if (!data.items || !data.items.length) {
-            container.innerHTML = '<p style="color:#ccc">No news available right now.</p>';
-            return;
+          const container = document.getElementById(feed.target);
+          if (data && data.items) {
+            container.innerHTML = data.items.slice(0, 5).map(item => `
+              <li><a href="${item.link}" target="_blank">${item.title}</a></li>
+            `).join('');
+          } else {
+            container.innerHTML = '<li>No news found.</li>';
           }
-          container.innerHTML = data.items.slice(0, 5).map(item => `
-            <div class="rss-item">
-              <a href="${item.link}" target="_blank">${item.title}</a>
-              <p>${item.pubDate}</p>
-            </div>
-          `).join('');
         })
-        .catch(err => {
-          console.error('Feed load failed:', feed.url);
-          document.getElementById(feed.id).innerHTML = '<p style="color:#f00">Failed to load feed.</p>';
+        .catch(() => {
+          document.getElementById(feed.target).innerHTML = '<li>Failed to load feed.</li>';
         });
     });
-  </script>  <script>
+  </script>
+
+  <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
     const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
     const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
+    const columns = Math.floor(window.innerWidth / fontSize);
     const drops = Array(columns).fill(1);
 
     function draw() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       ctx.fillStyle = "#39ff14";
       ctx.font = fontSize + "px monospace";
-
       for (let i = 0; i < drops.length; i++) {
         const text = letters[Math.floor(Math.random() * letters.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
+
     setInterval(draw, 35);
-  </script></body>
+  </script>
+
+</body>
 </html>
