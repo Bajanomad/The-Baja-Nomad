@@ -39,16 +39,24 @@ canvas {
 header {
   font-size: 3rem;
   font-family: 'Orbitron', sans-serif;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   text-shadow: 0 0 8px #39ff14;
   text-align: center;
   width: 100%;
 }
 
+.subheader {
+  font-size: 2.2rem;
+  font-family: 'Orbitron', sans-serif;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 6px #39ff14;
+  text-align: center;
+}
+
 .button-grid {
   display: grid;
   grid-template-columns: repeat(2, 120px);
-  gap: 1.5rem;
+  gap: 2.5rem;
   justify-content: center;
   align-items: center;
 }
@@ -79,11 +87,12 @@ header {
 <body>
   <canvas id="matrix"></canvas>
   <div class="content">
-    <header>The Baja Nomad</header>
+    <header>BAJA</header>
+    <div class="subheader">Nomad</div>
     <div class="button-grid">
       <button class="icon-button" onclick="window.open('https://calendar.google.com/calendar/embed?src=thebajanomad%40gmail.com&ctz=UTC', '_blank')">🏠</button>
       <button class="icon-button" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScRioIJdZa-N53VBqu7lwsGQlPv_Mumufis3UEwq0-Oj7d1fg/viewform?usp=sharing', '_blank')">💬</button>
-      <button class="icon-button" onclick="window.open('https://weather.com/weather/today', '_blank')">🌦️</button>
+      <button class="icon-button" onclick="window.open('https://weather.com/weather/today', '_blank')">🌤️</button>
       <button class="icon-button" onclick="window.open('https://www.eebmike.com', '_blank')">🌪️</button>
       <button class="icon-button" onclick="window.open('https://www.gringogazette.com', '_blank')">📰</button>
       <button class="icon-button" onclick="window.open('https://www.google.com/maps', '_blank')">🚗</button>
