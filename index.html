@@ -67,22 +67,23 @@
       white-space: nowrap;
     }
 
-    /* Clean button grid */
+    /* Button grid with bigger, spaced out buttons */
     .button-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(100px, 1fr));
-      grid-gap: 1.5rem;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      grid-gap: 2.5rem;
       justify-content: center;
       align-items: center;
-      margin-top: 1rem;
-      max-width: 280px; /* Two buttons + gap approx */
+      margin-top: 2rem;
+      width: 90vw;
+      max-width: 500px;
       margin-left: auto;
       margin-right: auto;
     }
 
     .icon-btn {
       width: 100%;
-      max-width: 120px;
+      max-width: 180px;
       aspect-ratio: 1 / 1;
       border-radius: 50%;
       background: black;
@@ -123,6 +124,19 @@
       transform: scale(0.95);
       box-shadow: 0 0 10px #2ecc40aa, 0 0 20px #2ecc40aa;
     }
+
+    /* Mobile tweak: single column, bigger buttons */
+    @media (max-width: 400px) {
+      .button-grid {
+        grid-template-columns: 1fr;
+        grid-gap: 2rem;
+        max-width: 320px;
+      }
+
+      .icon-btn {
+        max-width: 220px;
+      }
+    }
   </style>
 </head>
 
@@ -133,7 +147,7 @@
     <header>The Baja Nomad</header>
 
     <div class="button-grid">
-      <button class="icon-btn" onclick="window.location.href='home.html'" title="House Sitting">
+      <button class="icon-btn" onclick="window.location.href='Home.html'" title="House Sitting">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/home.png" alt="House Sitting" />
       </button>
 
