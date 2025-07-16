@@ -6,46 +6,53 @@
   <title>Local News - The Baja Nomad</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* Reset & base */
+    * { margin:0; padding:0; box-sizing: border-box; }
     html, body {
       height: 100%;
       background: black;
       font-family: 'Share Tech Mono', monospace;
       color: #39ff14;
       overflow-x: hidden;
+      position: relative;
+      padding: 2rem;
     }
 
-    canvas {
+    /* Matrix canvas */
+    #matrix {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
       pointer-events: none;
+      transform: translateZ(0);
     }
 
+    /* Content */
     .content {
       position: relative;
       z-index: 2;
-      min-height: 100vh;
-      padding: 2rem;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.75);
+      border: 2px solid #39ff14;
+      border-radius: 12px;
+      padding: 1rem 2rem 2rem 2rem;
+      box-shadow: 0 0 15px #39ff14aa;
+      min-height: 80vh;
+      overflow-y: auto;
     }
 
+    /* Header */
     header {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       text-align: center;
       text-shadow: 0 0 8px #39ff14;
-      animation: flicker 2.5s infinite alternate;
+      animation: flicker 3s infinite alternate;
+      user-select: none;
     }
-
     @keyframes flicker {
       0%, 100% {
         text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
@@ -55,12 +62,13 @@
         text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
         opacity: 0.8;
       }
-      70% {
+      75% {
         text-shadow: none;
         opacity: 0.6;
       }
     }
 
+    /* Back arrow button */
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -79,149 +87,191 @@
       z-index: 999;
       text-decoration: none;
     }
-
     .back-arrow:hover {
       transform: scale(1.1);
       border-color: #2ecc40;
       box-shadow: 0 0 16px #2ecc40cc;
     }
-
     .back-arrow img {
       width: 20px;
       height: 20px;
       filter: drop-shadow(0 0 2px #39ff14);
+      user-select: none;
+      pointer-events: none;
     }
 
-    .news-feed {
-      width: 100%;
-      max-width: 900px;
+    /* News Feed styles */
+    .feed {
       margin-bottom: 2rem;
-      border: 2px solid #39ff14;
-      border-radius: 12px;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.9);
-      box-shadow: 0 0 15px #39ff14aa;
     }
-
-    .news-feed h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #90ff46;
-      text-shadow: 0 0 5px #39ff14aa;
+    .feed h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #39ff14;
+      padding-bottom: 0.25rem;
+      user-select: none;
     }
-
-    .news-feed ul {
+    .articles {
       list-style: none;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px;
     }
-
-    .news-feed li {
+    .articles li {
       margin-bottom: 1rem;
+      border-bottom: 1px dotted #2ecc40;
+      padding-bottom: 0.5rem;
     }
-
-    .news-feed a {
-      color: #39ff14;
+    .articles li a {
+      color: #90ff46;
+      font-weight: bold;
       text-decoration: none;
+      user-select: text;
     }
-
-    .news-feed a:hover {
+    .articles li a:hover {
       text-decoration: underline;
       color: #2ecc40;
+    }
+    .articles li .pubDate {
+      font-size: 0.8rem;
+      color: #2ecc40aa;
+      user-select: text;
     }
   </style>
 </head>
 <body>
 
+  <!-- Matrix background -->
   <canvas id="matrix"></canvas>
 
+  <!-- Back arrow -->
   <a href="index.html" title="Back to Main" class="back-arrow">
     <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
   </a>
 
+  <!-- Content container -->
   <div class="content">
     <header>Local News</header>
 
-    <div class="news-feed" id="gringo">
-      <h2>Gringo Gazette</h2>
-      <ul id="gringo-news">Loading Gringo Gazette...</ul>
-    </div>
-
-    <div class="news-feed" id="cabo">
-      <h2>Cabo News Today</h2>
-      <ul id="cabo-news">Loading Cabo News Today...</ul>
-    </div>
-
-    <div class="news-feed" id="baja">
-      <h2>Baja Insider</h2>
-      <ul id="baja-news">Loading Baja Insider...</ul>
+    <div id="news-container">
+      <!-- Feeds get injected here -->
     </div>
   </div>
 
-  <script>
-    const feeds = [
-      {
-        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.gringogazette.com%2Ffeed",
-        target: "gringo-news"
-      },
-      {
-        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fcabonewstoday.com%2Ffeed",
-        target: "cabo-news"
-      },
-      {
-        url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fbajainsider.com%2Ffeed",
-        target: "baja-news"
-      }
-    ];
+<script>
+  // Matrix rain effect
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
 
-    feeds.forEach(feed => {
-      fetch(feed.url)
-        .then(response => response.json())
-        .then(data => {
-          const container = document.getElementById(feed.target);
-          if (data && data.items) {
-            container.innerHTML = data.items.slice(0, 5).map(item => `
-              <li><a href="${item.link}" target="_blank">${item.title}</a></li>
-            `).join('');
-          } else {
-            container.innerHTML = '<li>No news found.</li>';
-          }
-        })
-        .catch(() => {
-          document.getElementById(feed.target).innerHTML = '<li>Failed to load feed.</li>';
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
+  const fontSize = 14;
+  let columns = Math.floor(canvas.width / fontSize);
+  let drops = Array(columns).fill(1);
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#39ff14";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(draw, 35);
+
+  // List of RSS feeds to fetch & display
+  const feeds = [
+    {
+      name: "Gringo Gazette",
+      url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.gringogazette.com%2Ffeed"
+    },
+    {
+      name: "The Cabo Sun",
+      url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fthecabosun.com%2Ffeed"
+    },
+    {
+      name: "La Paz Times",
+      url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Flapaztimes.com%2Ffeed"
+    },
+    {
+      name: "Baja Insider",
+      url: "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fbajainsider.com%2Ffeed"
+    }
+  ];
+
+  const container = document.getElementById('news-container');
+
+  // Helper: format date
+  function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString(undefined, {year: 'numeric', month: 'short', day: 'numeric'});
+  }
+
+  // Fetch & render each feed
+  feeds.forEach(feed => {
+    fetch(feed.url)
+      .then(response => response.json())
+      .then(data => {
+        if (!data.items) return;
+
+        const feedDiv = document.createElement('div');
+        feedDiv.className = 'feed';
+
+        const title = document.createElement('h2');
+        title.textContent = feed.name;
+        feedDiv.appendChild(title);
+
+        const list = document.createElement('ul');
+        list.className = 'articles';
+
+        data.items.slice(0, 8).forEach(item => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = item.link;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = item.title;
+          li.appendChild(a);
+
+          const dateSpan = document.createElement('div');
+          dateSpan.className = 'pubDate';
+          dateSpan.textContent = formatDate(item.pubDate);
+          li.appendChild(dateSpan);
+
+          list.appendChild(li);
         });
-    });
-  </script>
 
-  <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
-    const fontSize = 14;
-    const columns = Math.floor(window.innerWidth / fontSize);
-    const drops = Array(columns).fill(1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#39ff14";
-      ctx.font = fontSize + "px monospace";
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 35);
-  </script>
+        feedDiv.appendChild(list);
+        container.appendChild(feedDiv);
+      })
+      .catch(err => {
+        console.error(`Failed to load ${feed.name} feed:`, err);
+        // Show an error message on the page instead of the feed
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'feed';
+        errorDiv.innerHTML = `<h2>${feed.name}</h2><p style="color:#f00;">Failed to load feed.</p>`;
+        container.appendChild(errorDiv);
+      });
+  });
+</script>
 
 </body>
 </html>
