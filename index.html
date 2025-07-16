@@ -4,13 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Baja Nomad</title>
+
+  <!-- Google Fonts: Orbitron & Share Tech Mono -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- =========================== STYLES =========================== -->
   <style>
+    /* Basic reset */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
+    /* Global page styling */
     html, body {
       height: 100%;
       background: black;
@@ -18,12 +25,16 @@
       color: #39ff14;
       overflow-x: hidden;
     }
+
+    /* Matrix canvas background */
     canvas {
       position: fixed;
       top: 0;
       left: 0;
       z-index: 0;
     }
+
+    /* Content wrapper */
     .content {
       position: relative;
       z-index: 1;
@@ -36,12 +47,23 @@
       background: rgba(0, 0, 0, 0.6);
     }
 
+    /* Header neon flicker animation */
     @keyframes neonFlicker {
-      0%, 100% { text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc; opacity: 1; }
-      50% { text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa; opacity: 0.8; }
-      70% { text-shadow: none; opacity: 0.6; }
+      0%, 100% {
+        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+        opacity: 1;
+      }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
     }
 
+    /* Page title */
     header {
       font-size: 2.5rem;
       font-family: 'Orbitron', sans-serif;
@@ -51,6 +73,7 @@
       white-space: nowrap;
     }
 
+    /* Grid layout for buttons */
     .button-grid {
       display: grid;
       grid-template-columns: repeat(2, 120px);
@@ -60,6 +83,7 @@
       margin-top: 1rem;
     }
 
+    /* Icon buttons */
     .icon-btn {
       width: 120px;
       height: 120px;
@@ -74,6 +98,7 @@
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    /* Icon images inside buttons */
     .icon-btn img {
       width: 60%;
       height: 60%;
@@ -82,29 +107,16 @@
       user-select: none;
     }
 
+    /* Glitch hover animation */
     @keyframes glitch {
-      0% {
-        transform: translate(0);
-        filter: none;
-      }
-      20% {
-        transform: translate(-2px, 2px);
-        filter: drop-shadow(2px 0 #39ff14) drop-shadow(-2px 0 #2ecc40);
-      }
-      40% {
-        transform: translate(2px, -2px);
-        filter: drop-shadow(-2px 0 #39ff14) drop-shadow(2px 0 #2ecc40);
-      }
-      60% {
-        transform: translate(-1px, 1px);
-        filter: drop-shadow(1px 0 #2ecc40) drop-shadow(-1px 0 #39ff14);
-      }
-      80%, 100% {
-        transform: translate(0);
-        filter: none;
-      }
+      0% { transform: translate(0); filter: none; }
+      20% { transform: translate(-2px, 2px); filter: drop-shadow(2px 0 #39ff14) drop-shadow(-2px 0 #2ecc40); }
+      40% { transform: translate(2px, -2px); filter: drop-shadow(-2px 0 #39ff14) drop-shadow(2px 0 #2ecc40); }
+      60% { transform: translate(-1px, 1px); filter: drop-shadow(1px 0 #2ecc40) drop-shadow(-1px 0 #39ff14); }
+      80%, 100% { transform: translate(0); filter: none; }
     }
 
+    /* Hover effect on buttons */
     .icon-btn:hover {
       animation: glitch 0.4s infinite;
       border-color: #2ecc40;
@@ -113,45 +125,70 @@
     }
   </style>
 </head>
+
 <body>
+  <!-- ========== MATRIX BACKGROUND ========== -->
   <canvas id="matrix"></canvas>
+
+  <!-- ========== MAIN CONTENT AREA ========== -->
   <div class="content">
     <header>The Baja Nomad</header>
+
+    <!-- ========== ICON BUTTON GRID ========== -->
     <div class="button-grid">
-      <button class="icon-btn" onclick="window.open('https://calendar.google.com/calendar/embed?src=thebajanomad%40gmail.com&ctz=UTC', '_blank')" title="House Sitting">
+
+      <!-- 🏠 House Sitting (links to home.html) -->
+      <button class="icon-btn" onclick="window.location.href='home.html'" title="House Sitting">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/home.png" alt="House Sitting" />
       </button>
+
+      <!-- 💬 Reviews (Google Form) -->
       <button class="icon-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScRioIJdZa-N53VBqu7lwsGQlPv_Mumufis3UEwq0-Oj7d1fg/viewform?usp=sharing', '_blank')" title="Reviews">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/comments.png" alt="Reviews" />
       </button>
+
+      <!-- ☁️ Weather (Weather.com) -->
       <button class="icon-btn" onclick="window.open('https://weather.com/weather/today/l/23.17,-109.7?par=google', '_blank')" title="Weather">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/partly-cloudy-day.png" alt="Weather" />
       </button>
+
+      <!-- 🌪️ Hurricane (eebmike) -->
       <button class="icon-btn" onclick="window.open('https://www.eebmike.com', '_blank')" title="Hurricane">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/tornado.png" alt="Hurricane" />
       </button>
+
+      <!-- 📰 News (Gringo Gazette) -->
       <button class="icon-btn" onclick="window.open('https://www.gringogazette.com', '_blank')" title="News">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/news.png" alt="News" />
       </button>
+
+      <!-- 🚗 Traffic (iOverlander) -->
       <button class="icon-btn" onclick="window.open('https://www.ioverlander.com', '_blank')" title="Traffic">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/car.png" alt="Traffic" />
       </button>
+
+      <!-- 📘 Facebook Share -->
       <button class="icon-btn" onclick="window.open('https://www.facebook.com/share/1DZrpqihNX/', '_blank')" title="Facebook">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/facebook-new.png" alt="Facebook" />
       </button>
+
+      <!-- 📧 Email Link -->
       <button class="icon-btn" onclick="window.open('mailto:thebajanomad@gmail.com')" title="Email">
         <img src="https://img.icons8.com/ios-filled/100/39ff14/new-post.png" alt="Email" />
       </button>
     </div>
   </div>
 
+  <!-- ========== MATRIX JAVASCRIPT ========== -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
+    // Set canvas size
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
+    // Matrix characters
     const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
     const fontSize = 14;
     const columns = Math.floor(canvas.width / fontSize);
@@ -178,6 +215,7 @@
 
     setInterval(draw, 35);
 
+    // Resize canvas when window size changes
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
