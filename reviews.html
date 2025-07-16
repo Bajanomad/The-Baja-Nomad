@@ -99,4 +99,65 @@
       transition: transform 0.2s ease-in-out;
     }
 
-    .home-icon
+    .home-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #2ecc40cc;
+    }
+
+    @keyframes flicker {
+      0%, 100% {
+        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+        opacity: 1;
+      }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Return Home Icon -->
+  <a href="home.html" title="Return Home" class="home-icon">
+    <img src="https://img.icons8.com/ios-filled/100/39ff14/home.png" alt="Home" />
+  </a>
+
+  <div class="content">
+    <header>Leave a Review</header>
+    <p class="description">Tell it like it is. We love the praise, but we can take a punch too.</p>
+
+    <form action="https://formspree.io/f/xanbypng" method="POST">
+      <!-- Name -->
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" placeholder="Your name..." required />
+
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
+
+      <!-- Rating -->
+      <label for="rating">Rating</label>
+      <select name="rating" id="rating" required>
+        <option value="">Select one</option>
+        <option>⭐️⭐️⭐️⭐️⭐️ - Flawless</option>
+        <option>⭐️⭐️⭐️⭐️ - Damn good</option>
+        <option>⭐️⭐️⭐️ - Solid</option>
+        <option>⭐️⭐️ - Meh</option>
+        <option>⭐️ - Total dumpster fire</option>
+      </select>
+
+      <!-- Message -->
+      <label for="message">Message</label>
+      <textarea name="message" id="message" rows="5" placeholder="Let it rip..." required></textarea>
+
+      <!-- Submit -->
+      <button type="submit">Submit Review</button>
+    </form>
+  </div>
+</body>
+</html>
