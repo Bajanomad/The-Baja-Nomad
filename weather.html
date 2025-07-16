@@ -6,6 +6,7 @@
   <title>Weather - The Baja Nomad</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
+    /* ===== GLOBAL STYLES ===== */
     * {
       box-sizing: border-box;
       margin: 0; padding: 0;
@@ -16,12 +17,31 @@
       color: #39ff14;
       font-family: 'Share Tech Mono', monospace;
       overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ===== MATRIX BACKGROUND CANVAS ===== */
+    canvas#matrix {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== MAIN CONTENT CONTAINER ===== */
+    .content {
+      position: relative;
+      z-index: 1;
       padding: 2rem;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
     }
+
+    /* ===== PAGE HEADER ===== */
     header {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
@@ -35,6 +55,8 @@
       50% { text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa; opacity: 0.8; }
       70% { text-shadow: none; opacity: 0.6; }
     }
+
+    /* ===== BACK ARROW BUTTON ===== */
     .back-arrow {
       position: fixed;
       top: 20px; left: 20px;
@@ -60,6 +82,8 @@
       width: 20px; height: 20px;
       filter: drop-shadow(0 0 2px #39ff14);
     }
+
+    /* ===== WEATHER CARDS CONTAINER ===== */
     .weather-container {
       display: flex;
       flex-wrap: wrap;
@@ -67,7 +91,13 @@
       justify-content: center;
       max-width: 980px;
       width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      box-shadow: 0 0 15px #39ff14aa;
     }
+
+    /* ===== WEATHER CARD STYLES ===== */
     .weather-card {
       background: rgba(0, 0, 0, 0.85);
       border: 2px solid #39ff14;
@@ -108,17 +138,65 @@
 </head>
 <body>
 
+  <!-- ===== MATRIX RAIN EFFECT CANVAS ===== -->
+  <canvas id="matrix"></canvas>
+
+  <!-- ===== BACK ARROW BUTTON LINK ===== -->
   <a href="index.html" title="Back to Main" class="back-arrow">
     <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
   </a>
 
-  <header>Weather - The Baja Nomad</header>
+  <!-- ===== MAIN PAGE CONTENT ===== -->
+  <div class="content">
+    <!-- PAGE HEADER -->
+    <header>Weather - The Baja Nomad</header>
 
-  <div class="weather-container" id="weather-container">
-    <!-- Weather cards injected here -->
+    <!-- WEATHER CARDS CONTAINER -->
+    <div class="weather-container" id="weather-container">
+      <!-- Weather cards injected here by JS -->
+    </div>
   </div>
 
+  <!-- ===== JAVASCRIPT: MATRIX RAIN & WEATHER FETCH ===== -->
   <script>
+    /* ===== MATRIX RAIN EFFECT ===== */
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#39ff14";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 35);
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    /* ===== WEATHER FETCHING & DISPLAY ===== */
     const API_KEY = '02ad3935f8620de31849a9e252740489';
 
     const cities = [
@@ -185,6 +263,5 @@
 
     loadWeather();
   </script>
-
 </body>
 </html>
