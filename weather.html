@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather - The Baja Nomad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      background: black;
+      font-family: 'Share Tech Mono', monospace;
+      color: #39ff14;
+      overflow-x: hidden;
+      padding: 2rem;
+    }
+    header {
+      font-size: 2.5rem;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 2rem;
+      text-align: center;
+      text-shadow: 0 0 8px #39ff14;
+      animation: flicker 2.5s infinite alternate;
+    }
+    .back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      z-index: 999;
+      background: black;
+      border: 2px solid #39ff14;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px #39ff14aa;
+      transition: all 0.2s ease-in-out;
+    }
+    .back-arrow:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 16px #2ecc40cc;
+      border-color: #2ecc40;
+    }
+    .back-arrow img {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 0 2px #39ff14);
+    }
+    .widget-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .widget {
+      border: 2px solid #39ff14;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #39ff14aa;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 1rem;
+      width: 320px;
+      color: #39ff14;
+      font-family: 'Share Tech Mono', monospace;
+      text-align: center;
+    }
+    .widget h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #39ff14;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 250px;
+      border-radius: 8px;
+    }
+    @keyframes flicker {
+      0%, 100% {
+        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+        opacity: 1;
+      }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back Arrow -->
+  <a href="index.html" title="Back to Main" class="back-arrow">
+    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+  </a>
+
+  <header>Weather - The Baja Nomad</header>
+
+  <div class="widget-container">
+    <div class="widget">
+      <h2>La Paz</h2>
+      <iframe
+        src="https://weather.com/weather/today/l/23.6412,-110.3109?par=google"
+        title="La Paz Weather"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-popups"
+      ></iframe>
+    </div>
+
+    <div class="widget">
+      <h2>Los Cabos</h2>
+      <iframe
+        src="https://weather.com/weather/today/l/22.8905,-109.9126?par=google"
+        title="Los Cabos Weather"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-popups"
+      ></iframe>
+    </div>
+
+    <div class="widget">
+      <h2>Todos Santos</h2>
+      <iframe
+        src="https://weather.com/weather/today/l/23.4511,-110.2633?par=google"
+        title="Todos Santos Weather"
+        loading="lazy"
+        sandbox="allow-scripts allow-same-origin allow-popups"
+      ></iframe>
+    </div>
+  </div>
+
+</body>
+</html>
