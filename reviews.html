@@ -138,3 +138,99 @@
         text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
         opacity: 1;
       }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Matrix Background -->
+  <canvas id="matrix"></canvas>
+
+  <!-- Back Arrow -->
+  <a href="index.html" title="Back to Main" class="back-arrow">
+    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+  </a>
+
+  <!-- Review Content -->
+  <div class="content">
+    <header>Leave a Review</header>
+    <p class="description">Tell it like it is. We love the praise, but we can take a punch too.</p>
+
+    <form action="https://formspree.io/f/xanbypng" method="POST">
+      <!-- Name -->
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" placeholder="Your name..." required />
+
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
+
+      <!-- Rating -->
+      <label for="rating">Rating</label>
+      <select name="rating" id="rating" required>
+        <option value="">Select one</option>
+        <option>⭐️⭐️⭐️⭐️⭐️ - Flawless</option>
+        <option>⭐️⭐️⭐️⭐️ - Damn good</option>
+        <option>⭐️⭐️⭐️ - Solid</option>
+        <option>⭐️⭐️ - Meh</option>
+        <option>⭐️ - Total dumpster fire</option>
+      </select>
+
+      <!-- Message -->
+      <label for="message">Message</label>
+      <textarea name="message" id="message" rows="5" placeholder="Let it rip..." required></textarea>
+
+      <!-- Submit -->
+      <button type="submit">Submit Review</button>
+    </form>
+  </div>
+
+  <!-- Matrix Rain Script -->
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#39ff14";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 35);
+  </script>
+</body>
+</html>
