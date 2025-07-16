@@ -6,7 +6,6 @@
   <title>Local News - The Baja Nomad</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    /* Reset & base */
     * { margin:0; padding:0; box-sizing: border-box; }
     html, body {
       height: 100%;
@@ -18,7 +17,6 @@
       padding: 2rem;
     }
 
-    /* Matrix canvas */
     #matrix {
       position: fixed;
       top: 0; left: 0;
@@ -28,31 +26,30 @@
       transform: translateZ(0);
     }
 
-    /* Content */
     .content {
       position: relative;
       z-index: 2;
       max-width: 900px;
       margin: 0 auto;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0,0,0,0.95); /* Darkened to reduce background bleed */
       border: 2px solid #39ff14;
       border-radius: 12px;
-      padding: 1rem 2rem 2rem 2rem;
+      padding: 2rem;
       box-shadow: 0 0 15px #39ff14aa;
       min-height: 80vh;
       overflow-y: auto;
     }
 
-    /* Header */
     header {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       text-align: center;
       text-shadow: 0 0 8px #39ff14;
       animation: flicker 3s infinite alternate;
       user-select: none;
     }
+
     @keyframes flicker {
       0%, 100% {
         text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
@@ -68,7 +65,6 @@
       }
     }
 
-    /* Back arrow button */
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -87,11 +83,13 @@
       z-index: 999;
       text-decoration: none;
     }
+
     .back-arrow:hover {
       transform: scale(1.1);
       border-color: #2ecc40;
       box-shadow: 0 0 16px #2ecc40cc;
     }
+
     .back-arrow img {
       width: 20px;
       height: 20px;
@@ -100,10 +98,14 @@
       pointer-events: none;
     }
 
-    /* News Feed styles */
     .feed {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 0 6px #2ecc4080;
     }
+
     .feed h2 {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.6rem;
@@ -112,27 +114,33 @@
       padding-bottom: 0.25rem;
       user-select: none;
     }
+
     .articles {
       list-style: none;
       max-height: 300px;
       overflow-y: auto;
-      padding-right: 10px;
+      padding: 0 0.5rem;
     }
+
     .articles li {
       margin-bottom: 1rem;
       border-bottom: 1px dotted #2ecc40;
       padding-bottom: 0.5rem;
     }
+
     .articles li a {
       color: #90ff46;
       font-weight: bold;
       text-decoration: none;
+      font-size: 1rem;
       user-select: text;
     }
+
     .articles li a:hover {
       text-decoration: underline;
       color: #2ecc40;
     }
+
     .articles li .pubDate {
       font-size: 0.8rem;
       color: #2ecc40aa;
@@ -142,25 +150,19 @@
 </head>
 <body>
 
-  <!-- Matrix background -->
-  <canvas id="matrix"></canvas>
+<canvas id="matrix"></canvas>
 
-  <!-- Back arrow -->
-  <a href="index.html" title="Back to Main" class="back-arrow">
-    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
-  </a>
+<a href="index.html" title="Back to Main" class="back-arrow">
+  <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+</a>
 
-  <!-- Content container -->
-  <div class="content">
-    <header>Local News</header>
-
-    <div id="news-container">
-      <!-- Feeds get injected here -->
-    </div>
-  </div>
+<div class="content">
+  <header>Local News</header>
+  <div id="news-container"></div>
+</div>
 
 <script>
-  // Matrix rain effects 
+  // Matrix background
   const canvas = document.getElementById('matrix');
   const ctx = canvas.getContext('2d');
 
@@ -179,7 +181,6 @@
   function draw() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     ctx.fillStyle = "#39ff14";
     ctx.font = fontSize + "px monospace";
 
@@ -190,14 +191,13 @@
       if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
         drops[i] = 0;
       }
-
       drops[i]++;
     }
   }
 
   setInterval(draw, 35);
 
-  // List of RSS feeds to fetch & display
+  // News feeds
   const feeds = [
     {
       name: "Gringo Gazette",
@@ -219,18 +219,22 @@
 
   const container = document.getElementById('news-container');
 
-  // Helper: format date
   function formatDate(dateStr) {
     const date = new Date(dateStr);
-    return date.toLocaleDateString(undefined, {year: 'numeric', month: 'short', day: 'numeric'});
+    return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
-  // Fetch & render each feed
   feeds.forEach(feed => {
     fetch(feed.url)
       .then(response => response.json())
       .then(data => {
-        if (!data.items) return;
+        if (!data || !data.items || !data.items.length) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'feed';
+          errorDiv.innerHTML = `<h2>${feed.name}</h2><p style="color:#f00;">No articles found or feed blocked.</p>`;
+          container.appendChild(errorDiv);
+          return;
+        }
 
         const feedDiv = document.createElement('div');
         feedDiv.className = 'feed';
@@ -264,7 +268,6 @@
       })
       .catch(err => {
         console.error(`Failed to load ${feed.name} feed:`, err);
-        // Show an error message on the page instead of the feed
         const errorDiv = document.createElement('div');
         errorDiv.className = 'feed';
         errorDiv.innerHTML = `<h2>${feed.name}</h2><p style="color:#f00;">Failed to load feed.</p>`;
