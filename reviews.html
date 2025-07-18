@@ -28,7 +28,6 @@
       z-index: 0;
     }
 
-    /* Back Arrow */
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -68,26 +67,45 @@
       overflow-y: auto;
       z-index: 1;
       background: rgba(0, 0, 0, 0.75);
-      padding: 5rem 2rem 2rem 2rem; /* padding-top bumped to avoid back arrow */
+      padding: 5rem 2rem 2rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    header {
-      font-size: 2.5rem;
-      font-family: 'Orbitron', sans-serif;
-      margin-bottom: 1rem;
+    p.description {
+      font-size: 2rem;
       text-align: center;
-      text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+      color: #39ff14;
+      text-shadow: 0 0 10px #39ff14aa;
+      margin-bottom: 2rem;
     }
 
-    p.description {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      text-align: center;
+    .reviews-section {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    .review {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #2ecc40;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #2ecc40aa;
+    }
+
+    .review-text {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #39ff14;
+    }
+
+    .review-author {
+      font-size: 0.9rem;
       color: #2ecc40cc;
-      text-shadow: 0 0 5px #2ecc40aa;
+      text-align: right;
     }
 
     form {
@@ -138,17 +156,22 @@
 </head>
 <body>
 
-  <!-- Matrix Canvas -->
   <canvas id="matrix"></canvas>
 
-  <!-- Back Arrow -->
   <a href="index.html" title="Back to Main" class="back-arrow">
     <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
   </a>
 
-  <!-- Content Wrapper -->
   <div class="content">
-    <header>Leave a Review</header>
+    <p class="description">The good, the bad, and the brutally honest.</p>
+
+    <!-- === Reviews Display Section (Manually Add Reviews Below) === -->
+    <div class="reviews-section">
+      <div class="review">
+        <p class="review-text">"I’ve had more than 15 years of working with caretakers on multiple properties and David is the most communicative and responsive I’ve ever had. He is great at listening and following instruction no matter how complicated or confusing it might be. He has proven to be extremely committed to caring for my property and pets. He has exceeded my expectations on many occasions by identifying areas that needed attention and cleaning them up or by spotting things that could use some work and offering to fix them. I feel at ease knowing that David is at my property, maintaining everything and taking better care of the place than I do myself!"</p>
+        <p class="review-author">Dan</p>
+      </div>
+
     <p class="description">Tell it like it is. I love the praise, but I can take a punch too.</p>
 
     <form action="https://formspree.io/f/xanbypng" method="POST">
@@ -175,7 +198,6 @@
     </form>
   </div>
 
-  <!-- Matrix Script -->
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
