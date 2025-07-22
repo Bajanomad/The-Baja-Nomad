@@ -1,121 +1,239 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>🌀 Hurricane Tracker</title>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reviews - The Baja Nomad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      background-color: #000;
-      color: #00ff00;
-      font-family: 'VT323', monospace;
+      padding: 0;
     }
-    .frame {
-      border: 2px solid #00ff00;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 12px;
-      background-color: rgba(0, 255, 0, 0.05);
-      box-shadow: 0 0 15px #00ff00;
+
+    html, body {
+      height: 100%;
+      background: black;
+      font-family: 'Share Tech Mono', monospace;
+      color: #39ff14;
+      overflow: hidden;
     }
-    .titlebar {
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      z-index: 999;
+      background: black;
+      border: 2px solid #39ff14;
+      border-radius: 50%;
       display: flex;
       align-items: center;
-      margin-bottom: 16px;
-    }
-    .back-btn {
+      justify-content: center;
+      box-shadow: 0 0 8px #39ff14aa;
+      transition: all 0.2s ease-in-out;
       text-decoration: none;
-      color: #00ff00;
-      font-size: 20px;
-      margin-right: 12px;
-      transition: transform 0.2s ease;
     }
-    .back-btn:hover {
-      transform: scale(1.2);
-      text-shadow: 0 0 5px #00ff00;
+
+    .back-arrow:hover {
+      transform: scale(1.1);
+      border-color: #2ecc40;
+      box-shadow: 0 0 16px #2ecc40cc;
     }
-    h1 {
-      font-size: 28px;
-      margin: 0;
+
+    .back-arrow img {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 0 2px #39ff14);
     }
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 16px;
-    }
-    .tile {
-      position: relative;
-      background: #111;
-      border: 1px solid #00ff00;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 8px #00ff00;
-    }
-    .tile img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .tile .label {
+
+    .content {
       position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       bottom: 0;
-      width: 100%;
-      padding: 6px;
-      background: rgba(0, 255, 0, 0.2);
-      font-size: 16px;
+      overflow-y: auto;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 5rem 2rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    p.description {
+      font-size: 2rem;
       text-align: center;
+      color: #39ff14;
+      text-shadow: 0 0 10px #39ff14aa;
+      margin-bottom: 2rem;
+    }
+
+    .reviews-section {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 3rem;
+    }
+
+    .review {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #2ecc40;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 0 8px #2ecc40aa;
+    }
+
+    .review-text {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #39ff14;
+    }
+
+    .review-author {
+      font-size: 0.9rem;
+      color: #2ecc40cc;
+      text-align: right;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    input, textarea, select {
+      padding: 0.75rem;
+      background: black;
+      border: 2px solid #39ff14;
+      color: #39ff14;
+      font-size: 1rem;
+      border-radius: 4px;
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: 0 0 5px #39ff14aa;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #2ecc40;
+      box-shadow: 0 0 10px #2ecc40aa;
+    }
+
+    button {
+      background: #39ff14;
+      color: black;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      box-shadow: 0 0 10px #39ff14bb;
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background: #2ecc40;
+      box-shadow: 0 0 20px #2ecc40cc;
     }
   </style>
-  <script>
-    const REFRESH = 10 * 60 * 1000;
-    function reloadImages() {
-      document.querySelectorAll('img').forEach(img => {
-        const src = img.dataset.src;
-        img.src = src + '?_=' + Date.now();
-      });
-    }
-    window.onload = () => {
-      reloadImages();
-      setInterval(reloadImages, REFRESH);
-    };
-  </script>
 </head>
 <body>
-  <div class="frame">
-    <div class="titlebar">
-      <a class="back-btn" href="home.html">⬅ BACK</a>
-      <h1>Hurricane Tracker Command</h1>
-    </div>
-    <div id="grid">
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=epac&fdays=2" alt="EPAC 2‑Day Outlook">
-        <div class="label">EPAC 2‑Day Outlook</div>
+
+  <canvas id="matrix"></canvas>
+
+  <a href="index.html" title="Back to Main" class="back-arrow">
+    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+  </a>
+
+  <div class="content">
+    <p class="description">The good, the bad, and the brutally honest.</p>
+
+    <!-- === Reviews Display Section (Manually Add Reviews Below) === -->
+    <div class="reviews-section">
+      <div class="review">
+        <p class="review-text">"I’ve had more than 15 years of working with caretakers on multiple properties and David is the most communicative and responsive I’ve ever had. He is great at listening and following instruction no matter how complicated or confusing it might be. He has proven to be extremely committed to caring for my property and pets. He has exceeded my expectations on many occasions by identifying areas that needed attention and cleaning them up or by spotting things that could use some work and offering to fix them. I feel at ease knowing that David is at my property, maintaining everything and taking better care of the place than I do myself!"</p>
+        <p class="review-author">Dan</p>
       </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=epac&fdays=7" alt="EPAC 7‑Day Outlook">
-        <div class="label">EPAC 7‑Day Outlook</div>
-      </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=atlc&fdays=2" alt="ATL 2‑Day Outlook">
-        <div class="label">ATL 2‑Day Outlook</div>
-      </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/gtwo.php?basin=atlc&fdays=7" alt="ATL 7‑Day Outlook">
-        <div class="label">ATL 7‑Day Outlook</div>
-      </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_5day_cone_no_line.png" alt="5-Day Track Cone">
-        <div class="label">5‑Day Cone (EP02)</div>
-      </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_current_wind.png" alt="Current Wind Field">
-        <div class="label">Wind Field (EP02)</div>
-      </div>
-      <div class="tile">
-        <img data-src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_wind_probs_34_Ffff.png" alt="Wind Probabilities">
-        <div class="label">Wind Prob 34kt (EP02)</div>
-      </div>
+
+    <p class="description">Tell it like it is. I love the praise, but I can take a punch too.</p>
+
+    <form action="https://formspree.io/f/xanbypng" method="POST">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" placeholder="Your name..." required />
+
+      <label for="email">Email</label>
+      <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
+
+      <label for="rating">Rating</label>
+      <select name="rating" id="rating" required>
+        <option value="">Select one</option>
+        <option>⭐️⭐️⭐️⭐️⭐️ - Flawless</option>
+        <option>⭐️⭐️⭐️⭐️ - Damn good</option>
+        <option>⭐️⭐️⭐️ - Solid</option>
+        <option>⭐️⭐️ - Meh</option>
+        <option>⭐️ - Total dumpster fire</option>
+      </select>
+
+      <label for="message">Message</label>
+      <textarea name="message" id="message" rows="5" placeholder="Let it rip..." required></textarea>
+
+      <button type="submit">Submit Review</button>
+    </form>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+body>
+  <a href="index.html" title="Back to Main" class="back-arrow">
+    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+  </a>
+  <div class="content">
+    <h1>Hurricane Tracker</h1>
+    <div class="image-list">
+      <img src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/mex/13/GOES19-MEX-13-1000x1000.gif" alt="Hurricane Image 1" />
+      <img src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/eep/13/GOES19-EEP-13-900x540.gif" alt="Hurricane Image 2" />
+      <img src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/mex/GEOCOLOR/GOES19-MEX-GEOCOLOR-1000x1000.gif" alt="Hurricane Image 3" />
+      <img src="https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/eep/GEOCOLOR/GOES19-EEP-GEOCOLOR-900x540.gif" alt="Hurricane Image 4" />
+      <img src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_5day_cone_no_line.png?_=1753151543414" alt="Hurricane Image 5" />
+      <img src="https://www.nhc.noaa.gov/storm_graphics/EP02/EP022025_current_wind.png?_=1753151461250" alt="Hurricane Image 6" />
+      <img src="https://www.ospo.noaa.gov/data/sst/contour/gulfcalf.c.gif" alt="Hurricane Image 7" />
+      <img src="https://www.nhc.noaa.gov/tafb_latest/pacsfc24_latestBW.gif" alt="Hurricane Image 8" />
+      <img src="https://www.nhc.noaa.gov/tafb_latest/pacsea_latestBW.gif" alt="Hurricane Image 9" />
     </div>
   </div>
+</body>
+</html
+
 </body>
 </html>
