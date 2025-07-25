@@ -209,23 +209,38 @@
     });
   </script>
 
-  <div id="visitor-counter" style="font-family: 'Orbitron', monospace; color: #0f0; background: #000; padding: 10px; width: fit-content; margin: 20px auto; border: 2px solid #0f0; border-radius: 5px; text-align: center;">
-    Visitors: <span id="count">0</span>
-  </div>
+  <div id="visitor-counter" class="visitor-counter">420 Visitors</div>
 
-  <script>
-    (function() {
-      const counterEl = document.getElementById('count');
-      if (!localStorage.getItem('visited')) {
-        let count = parseInt(localStorage.getItem('visitorCount') || '0', 10);
-        count++;
-        localStorage.setItem('visitorCount', count);
-        localStorage.setItem('visited', 'true');
-        counterEl.textContent = count;
-      } else {
-        counterEl.textContent = localStorage.getItem('visitorCount') || '0';
-      }
-    })();
-  </script>
+<style>
+  #visitor-counter {
+    color: #39ff14;
+    font-family: 'Share Tech Mono', monospace;
+    text-shadow: 0 0 5px #39ff14;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  #visitor-counter:hover {
+    color: red;
+    text-shadow: 0 0 10px crimson;
+  }
+</style>
+
+<script>
+  const counter = document.getElementById("visitor-counter");
+  const originalText = "420 Visitors";
+
+  counter.addEventListener("mouseenter", () => {
+    counter.textContent = "ACCESS DENIED";
+    counter.style.color = "red";
+    counter.style.textShadow = "0 0 10px crimson";
+
+    setTimeout(() => {
+      counter.textContent = originalText;
+      counter.style.color = "#39ff14";
+      counter.style.textShadow = "0 0 5px #39ff14";
+    }, 1500);
+  });
+</script>
 </body>
 </html>
