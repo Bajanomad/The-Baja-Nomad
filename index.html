@@ -214,20 +214,28 @@
 <style>
   .visitor-counter {
     margin-top: 40px;
-    font-size: 1.3rem;
+    padding: 12px 24px;
+    font-size: 1.4rem;
     font-weight: bold;
     text-align: center;
     color: #39ff14;
+    background-color: rgba(0, 0, 0, 0.7);
     font-family: 'Share Tech Mono', monospace;
     text-shadow: 0 0 6px #39ff14;
+    border: 2px solid #39ff14;
+    border-radius: 8px;
+    display: inline-block;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px #39ff14;
     transition: all 0.3s ease;
     cursor: pointer;
-    letter-spacing: 1px;
   }
 
   .visitor-counter:hover {
     color: red;
+    border-color: crimson;
     text-shadow: 0 0 12px crimson;
+    box-shadow: 0 0 16px crimson;
   }
 </style>
 
@@ -238,13 +246,17 @@
   counter.addEventListener("mouseenter", () => {
     counter.textContent = "ACCESS DENIED";
     counter.style.color = "red";
+    counter.style.borderColor = "crimson";
     counter.style.textShadow = "0 0 12px crimson";
+    counter.style.boxShadow = "0 0 16px crimson";
 
     setTimeout(() => {
       counter.textContent = originalText;
       counter.style.color = "#39ff14";
+      counter.style.borderColor = "#39ff14";
       counter.style.textShadow = "0 0 6px #39ff14";
-    }, 3000); // 3 second delay
+      counter.style.boxShadow = "0 0 10px #39ff14";
+    }, 3000);
   });
 </script>
   
