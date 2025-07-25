@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>News - The Baja Nomad</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     * { margin:0; padding:0; box-sizing: border-box; }
-
     html, body {
       height: 100%;
       background: black;
@@ -15,28 +15,23 @@
       color: #39ff14;
       overflow: hidden;
       position: relative;
-      padding: 0;
     }
-
     #matrix {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 0;
       pointer-events: none;
-      transform: translateZ(0);
     }
-
     .content {
       position: relative;
       z-index: 2;
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.95);
+      background: rgba(0, 0, 0, 0.6); /* Faded so matrix rain shows through */
       padding: 2rem;
       overflow-y: auto;
     }
-
     header {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
@@ -46,7 +41,6 @@
       animation: flicker 3s infinite alternate;
       user-select: none;
     }
-
     @keyframes flicker {
       0%, 100% {
         text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
@@ -61,7 +55,6 @@
         opacity: 0.6;
       }
     }
-
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -80,13 +73,11 @@
       z-index: 999;
       text-decoration: none;
     }
-
     .back-arrow:hover {
       transform: scale(1.1);
       border-color: #2ecc40;
       box-shadow: 0 0 16px #2ecc40cc;
     }
-
     .back-arrow img {
       width: 20px;
       height: 20px;
@@ -94,7 +85,6 @@
       user-select: none;
       pointer-events: none;
     }
-
     .feed {
       margin-bottom: 2.5rem;
       padding: 1rem;
@@ -102,7 +92,6 @@
       border-radius: 10px;
       box-shadow: 0 0 6px #2ecc4080;
     }
-
     .feed h2 {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.6rem;
@@ -111,20 +100,17 @@
       padding-bottom: 0.25rem;
       user-select: none;
     }
-
     .articles {
       list-style: none;
       max-height: 300px;
       overflow-y: auto;
       padding: 0 0.5rem;
     }
-
     .articles li {
       margin-bottom: 1rem;
       border-bottom: 1px dotted #2ecc40;
       padding-bottom: 0.5rem;
     }
-
     .articles li a {
       color: #90ff46;
       font-weight: bold;
@@ -132,12 +118,10 @@
       font-size: 1rem;
       user-select: text;
     }
-
     .articles li a:hover {
       text-decoration: underline;
       color: #2ecc40;
     }
-
     .articles li .pubDate {
       font-size: 0.8rem;
       color: #2ecc40aa;
@@ -146,11 +130,10 @@
   </style>
 </head>
 <body>
-
   <canvas id="matrix"></canvas>
 
   <a href="index.html" title="Back to Main" class="back-arrow">
-    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back" />
+    <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back to Main" />
   </a>
 
   <div class="content">
@@ -159,42 +142,46 @@
   </div>
 
   <script>
-    // Matrix background
+    // Matrix Rain
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
     const fontSize = 14;
     let columns = Math.floor(canvas.width / fontSize);
     let drops = Array(columns).fill(1);
 
-    function draw() {
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+
+    function drawMatrixRain() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "#39ff14";
       ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        const char = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
 
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i]++;
       }
+
+      requestAnimationFrame(drawMatrixRain);
     }
 
-    setInterval(draw, 35);
+    drawMatrixRain();
 
-    // News feeds - Baja Insider removed
+    // News feeds loader
     const feeds = [
       {
         name: "Gringo Gazette",
@@ -214,7 +201,11 @@
 
     function formatDate(dateStr) {
       const date = new Date(dateStr);
-      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      return date.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
     }
 
     feeds.forEach(feed => {
@@ -268,6 +259,5 @@
         });
     });
   </script>
-
 </body>
 </html>
