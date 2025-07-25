@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- META & TITLE -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>News - The Baja Nomad</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- FONTS -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- STYLES -->
   <style>
+    /* RESET & BASE */
     * { margin:0; padding:0; box-sizing: border-box; }
     html, body {
       height: 100%;
@@ -16,6 +24,8 @@
       overflow: hidden;
       position: relative;
     }
+
+    /* MATRIX CANVAS */
     #matrix {
       position: fixed;
       top: 0; left: 0;
@@ -23,15 +33,19 @@
       z-index: 0;
       pointer-events: none;
     }
+
+    /* MAIN CONTENT CONTAINER */
     .content {
       position: relative;
       z-index: 2;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.6); /* Faded so matrix rain shows through */
+      background: rgba(0, 0, 0, 0.6); /* Fade matrix rain */
       padding: 2rem;
       overflow-y: auto;
     }
+
+    /* HEADER WITH FLICKER */
     header {
       font-family: 'Orbitron', sans-serif;
       font-size: 2.5rem;
@@ -41,6 +55,8 @@
       animation: flicker 3s infinite alternate;
       user-select: none;
     }
+
+    /* FLICKER ANIMATION */
     @keyframes flicker {
       0%, 100% {
         text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
@@ -55,6 +71,8 @@
         opacity: 0.6;
       }
     }
+
+    /* BACK ARROW BUTTON */
     .back-arrow {
       position: fixed;
       top: 20px;
@@ -73,11 +91,13 @@
       z-index: 999;
       text-decoration: none;
     }
+
     .back-arrow:hover {
       transform: scale(1.1);
       border-color: #2ecc40;
       box-shadow: 0 0 16px #2ecc40cc;
     }
+
     .back-arrow img {
       width: 20px;
       height: 20px;
@@ -85,6 +105,8 @@
       user-select: none;
       pointer-events: none;
     }
+
+    /* NEWS FEED CONTAINER */
     .feed {
       margin-bottom: 2.5rem;
       padding: 1rem;
@@ -92,6 +114,7 @@
       border-radius: 10px;
       box-shadow: 0 0 6px #2ecc4080;
     }
+
     .feed h2 {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.6rem;
@@ -100,17 +123,21 @@
       padding-bottom: 0.25rem;
       user-select: none;
     }
+
+    /* ARTICLE LIST */
     .articles {
       list-style: none;
       max-height: 300px;
       overflow-y: auto;
       padding: 0 0.5rem;
     }
+
     .articles li {
       margin-bottom: 1rem;
       border-bottom: 1px dotted #2ecc40;
       padding-bottom: 0.5rem;
     }
+
     .articles li a {
       color: #90ff46;
       font-weight: bold;
@@ -118,10 +145,12 @@
       font-size: 1rem;
       user-select: text;
     }
+
     .articles li a:hover {
       text-decoration: underline;
       color: #2ecc40;
     }
+
     .articles li .pubDate {
       font-size: 0.8rem;
       color: #2ecc40aa;
@@ -130,19 +159,23 @@
   </style>
 </head>
 <body>
+  <!-- MATRIX RAIN CANVAS -->
   <canvas id="matrix"></canvas>
 
+  <!-- BACK ARROW BUTTON -->
   <a href="index.html" title="Back to Main" class="back-arrow">
     <img src="https://img.icons8.com/ios-filled/50/39ff14/left.png" alt="Back to Main" />
   </a>
 
+  <!-- MAIN CONTENT -->
   <div class="content">
     <header>Local News</header>
     <div id="news-container"></div>
   </div>
 
+  <!-- SCRIPTS -->
   <script>
-    // Matrix Rain
+    /* ==== MATRIX RAIN SCRIPT ==== */
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -173,7 +206,7 @@
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        drops[i]++;
+        drops[i] += 0.3; // slowed down here from 1 to 0.3
       }
 
       requestAnimationFrame(drawMatrixRain);
@@ -181,7 +214,7 @@
 
     drawMatrixRain();
 
-    // News feeds loader
+    /* ==== NEWS FEEDS LOADER SCRIPT ==== */
     const feeds = [
       {
         name: "Gringo Gazette",
