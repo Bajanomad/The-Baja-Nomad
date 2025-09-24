@@ -3,20 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Discussions - The Baja Nomad</title>
+  <title>The Baja Nomad</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 
-  <!-- Fonts -->
+  <!-- Open Graph for Social Sharing -->
+  <meta property="og:title" content="The Baja Nomad" />
+  <meta property="og:description" content="Welcome to the Baja Nomad, your one stop shop for local news and weather. You can also see my schedule if you would like to book me for house sitting or gardening." />
+  <meta property="og:image" content="https://yourdomain.com/social-preview.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com" />
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-
-  <!-- Styles -->
   <style>
-    * { margin:0; padding:0; box-sizing: border-box; }
-    html, body { height: 100%; background: black; font-family: 'Share Tech Mono', monospace; color: #39ff14; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+    html, body {
+      height: 100%;
+      background: black;
+      font-family: 'Share Tech Mono', monospace;
+      color: #39ff14;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
 
     .content {
       position: relative;
@@ -24,82 +44,160 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       padding: 2rem;
       min-height: 100%;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    @keyframes neonFlicker {
+      0%, 100% {
+        text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
+        opacity: 1;
+      }
+      50% {
+        text-shadow: 0 0 4px #2ecc40, 0 0 10px #2ecc40aa;
+        opacity: 0.8;
+      }
+      70% {
+        text-shadow: none;
+        opacity: 0.6;
+      }
     }
 
     header {
       font-size: 2.5rem;
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 2rem;
+      animation: neonFlicker 2.5s infinite alternate;
       text-align: center;
       white-space: nowrap;
-      text-shadow: 0 0 8px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14cc;
     }
 
-    .iframe-container {
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2rem;
+      width: 90vw;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .icon-btn {
       width: 100%;
-      max-width: 900px;
-      height: 600px;
-      margin-bottom: 2rem;
+      max-width: 160px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background: black;
       border: 3px solid #39ff14;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 15px #2ecc40aa;
+      box-shadow:
+        0 0 8px #39ff14aa,
+        0 0 15px #39ff14cc;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      padding: 0.5rem;
     }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .icon-btn img {
+      width: 60%;
+      height: 60%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
     }
 
-    /* Placeholder for chat */
-    .chat-container {
-      width: 100%;
-      max-width: 900px;
-      height: 300px;
-      border: 3px solid #39ff14;
-      border-radius: 10px;
-      box-shadow: 0 0 15px #2ecc40aa;
-      margin-top: 1rem;
+    .btn-label {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #39ff14;
+      text-shadow: 0 0 6px #39ff14aa;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); filter: none; }
+      20% { transform: translate(-2px, 2px); filter: drop-shadow(2px 0 #39ff14) drop-shadow(-2px 0 #2ecc40); }
+      40% { transform: translate(2px, -2px); filter: drop-shadow(-2px 0 #39ff14) drop-shadow(2px 0 #2ecc40); }
+      60% { transform: translate(-1px, 1px); filter: drop-shadow(1px 0 #2ecc40) drop-shadow(-1px 0 #39ff14); }
+      80%, 100% { transform: translate(0); filter: none; }
+    }
+
+    .icon-btn:hover {
+      animation: glitch 0.4s infinite;
+      border-color: #2ecc40;
+      box-shadow: 0 0 25px #2ecc40cc, 0 0 40px #2ecc40aa;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 0 10px #2ecc40aa, 0 0 20px #2ecc40aa;
     }
   </style>
 </head>
+
 <body>
   <canvas id="matrix"></canvas>
 
   <div class="content">
-    <header>Discussions</header>
+    <header>The Baja Noma<a href="dev.html" style="all: unset; cursor: default;">d</a></header>
 
-    <!-- Forum Embed -->
-    <div class="iframe-container">
-      <iframe src="https://groups.google.com/u/1/g/the-baja-nomad" title="Baja Nomad Forum"></iframe>
-    </div>
-
-    <!-- Chatroom placeholder -->
-    <div class="chat-container">
-      <!-- Replace this iframe src with your chat URL later -->
-      <iframe src="" title="Chat Room"></iframe>
+    <div class="button-grid">
+      <button class="icon-btn" onclick="window.location.href='home.html'" title="Schedule">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/home.png" alt="Schedule" />
+        <span class="btn-label">Schedule</span>
+      </button>
+      <button class="icon-btn" onclick="window.location.href='reviews.html'" title="Reviews">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/comments.png" alt="Reviews" />
+        <span class="btn-label">Reviews</span>
+      </button>
+      <button class="icon-btn" onclick="window.location.href='weather.html'" title="Weather">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/partly-cloudy-day.png" alt="Weather" />
+        <span class="btn-label">Weather</span>
+      </button>
+      <button class="icon-btn" onclick="window.location.href='hurricane.html'" title="Hurricanes">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/tornado.png" alt="Hurricanes" />
+        <span class="btn-label">Hurricanes</span>
+      </button>
+      <button class="icon-btn" onclick="window.location.href='map.html'" title="Map">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/car.png" alt="Map" />
+        <span class="btn-label">Map</span>
+      </button>
+      <button class="icon-btn" onclick="window.open('https://www.facebook.com/share/1DZrpqihNX/', '_blank')" title="Social Media">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/facebook-new.png" alt="Social Media" />
+        <span class="btn-label">Social Media</span>
+      </button>
+      <button class="icon-btn" onclick="window.open('mailto:thebajanomad@gmail.com')" title="Contact Me">
+        <img src="https://img.icons8.com/ios-filled/100/39ff14/new-post.png" alt="Contact Me" />
+        <span class="btn-label">Contact Me</span>
+      </button>
     </div>
   </div>
-
+  
   <script>
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     const fontSize = 14;
-    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
-    let columns, drops;
+    let drops = [];
 
     function setupCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      columns = Math.floor(canvas.width / fontSize);
+      const columns = Math.floor(canvas.width / fontSize);
       drops = Array(columns).fill(1);
     }
 
     setupCanvas();
+
+    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
 
     function draw() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -110,13 +208,22 @@
       for (let i = 0; i < drops.length; i++) {
         const text = letters[Math.floor(Math.random() * letters.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        drops[i] = drops[i] * fontSize > canvas.height && Math.random() > 0.975 ? 0 : drops[i] + 0.15;
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
       }
       requestAnimationFrame(draw);
     }
 
     draw();
-    window.addEventListener('resize', setupCanvas);
+
+    window.addEventListener('resize', () => {
+      setupCanvas();
+    });
   </script>
+
 </body>
 </html>
