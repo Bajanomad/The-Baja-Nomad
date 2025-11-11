@@ -43,9 +43,15 @@
         }
         .social-icons a {
             font-size: 32px;
-            color: #E1306C;
+            margin: 0 10px;
             text-decoration: none;
             transition: transform 0.2s ease;
+        }
+        .social-icons a[aria-label="Instagram"] {
+            color: #E1306C;
+        }
+        .social-icons a[aria-label="WhatsApp"] {
+            color: #25D366;
         }
         .social-icons a:hover {
             transform: scale(1.2);
@@ -59,6 +65,9 @@
         <p><a href="tel:+526122311639">+52 612-231-1639</a></p>
         <p><a href="mailto:Kenny@remaxcaborealestate.com">Kenny@remaxcaborealestate.com</a></p>
         <div class="social-icons">
+            <a href="https://wa.me/526122311639" target="_blank" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
             <a href="https://www.instagram.com/baja_kennyrealestate?igsh=MWcxdXRqc3U3bXZv" target="_blank" aria-label="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
