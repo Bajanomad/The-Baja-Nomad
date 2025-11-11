@@ -1,77 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE/MAX Digital Business Card</title>
+    <title>Kenneth Gehlhoff | RE/MAX Cerritos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
         }
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            background: #fff;
+            padding: 25px 20px;
+            border-radius: 12px;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 120px;
+        }
+        .profile-pic {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            float: right;
+            margin-top: -80px;
+            border: 2px solid #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 350px;
         }
-        .card img.logo {
-            max-width: 150px;
-            margin-bottom: 20px;
+        h1 {
+            margin: 0;
+            font-size: 22px;
         }
-        .card h1, .card p {
-            margin: 10px 0;
+        .title {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
-        .card a {
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
             color: #333;
             text-decoration: none;
-            font-weight: bold;
         }
-        .card a:hover {
+        .contact-item i {
+            margin-right: 12px;
+            font-size: 20px;
+            color: #555;
+        }
+        .contact-item:hover i {
             color: #E1306C;
-        }
-        .social-icons {
-            margin-top: 15px;
-        }
-        .social-icons a {
-            font-size: 32px;
-            margin: 0 10px;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-        }
-        .social-icons a[aria-label="Instagram"] {
-            color: #E1306C;
-        }
-        .social-icons a[aria-label="WhatsApp"] {
-            color: #25D366;
-        }
-        .social-icons a:hover {
-            transform: scale(1.2);
         }
     </style>
 </head>
 <body>
     <div class="card">
         <img src="https://remaxcaborealestate.com/images/brand/remax_cabosanctuary.svg" alt="RE/MAX Logo" class="logo">
+        <!-- Uncomment when image is available -->
+        <!-- <img src="PASTE_PROFILE_PIC_URL_HERE" alt="Kenneth Gehlhoff" class="profile-pic"> -->
         <h1>Kenneth Gehlhoff</h1>
-        <p><a href="tel:+526122311639">+52 612-231-1639</a></p>
-        <p><a href="mailto:Kenny@remaxcaborealestate.com">Kenny@remaxcaborealestate.com</a></p>
-        <div class="social-icons">
-            <a href="https://wa.me/526122311639" target="_blank" aria-label="WhatsApp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="https://www.instagram.com/baja_kennyrealestate?igsh=MWcxdXRqc3U3bXZv" target="_blank" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
-    </div>
+        <div class="title">REALTOR<br>RE/MAX Cerritos</div><a href="tel:+526122311639" class="contact-item">
+        <i class="fas fa-phone"></i> +52 612-231-1639
+    </a>
+
+    <a href="mailto:Kenny@remaxcaborealestate.com" class="contact-item">
+        <i class="fas fa-envelope"></i> Kenny@remaxcaborealestate.com
+    </a>
+
+    <a href="https://wa.me/526122311639" class="contact-item" target="_blank">
+        <i class="fab fa-whatsapp"></i> Chat via WhatsApp
+    </a>
+
+    <a href="https://www.instagram.com/baja_kennyrealestate" class="contact-item" target="_blank">
+        <i class="fab fa-instagram"></i> Instagram Profile
+    </a>
+
+    <a href="#" class="contact-item">
+        <i class="fas fa-link"></i> My available listings
+    </a>
+
+    <a href="#" class="contact-item">
+        <i class="fas fa-calendar-check"></i> Book a home valuation
+    </a>
+
+    <a href="#" class="contact-item">
+        <i class="fas fa-file-alt"></i> Brochure: Listing your home
+    </a>
+</div>
+
 </body>
 </html>
