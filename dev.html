@@ -53,24 +53,18 @@
         .contact-item i {
             margin-right: 14px;
             font-size: 22px;
-            border-radius: 50%;
-            padding: 8px;
-            transition: color 0.2s ease, background-color 0.2s ease;
-        }
-        .contact-item[href^="tel"] i,
-        .contact-item[href^="mailto"] i {
             background-color: #003DA5;
             color: #fff;
-        }
-        .contact-item[href*="wa.me"] i,
-        .contact-item[href*="instagram.com"] i {
-            background-color: #fff;
-            color: #003DA5;
-            border: 2px solid #003DA5;
+            border-radius: 50%;
+            padding: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .contact-item:hover i {
-            color: #E11B22;
-            border-color: #E11B22;
+            background-color: #E11B22;
         }
         @media (max-width: 500px) {
             .card {
@@ -87,7 +81,9 @@
             }
             .contact-item i {
                 font-size: 20px;
-                padding: 6px;
+                width: 36px;
+                height: 36px;
+                padding: 8px;
             }
         }
     </style>
