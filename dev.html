@@ -13,7 +13,7 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
-      background: linear-gradient(to bottom, #c6c6c6, #ffffff); /* Visible gradient */
+      background: linear-gradient(to bottom, #c6c6c6, #ffffff); /* visible gradient */
     }
 
     .card {
@@ -22,10 +22,11 @@
       border-radius: 14px;
       width: 100%;
       max-width: 480px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-      /* A slight vertical adjustment to keep it centered */
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+
+      /* Vertical nudge to compensate for browser UI pushing it down */
       position: relative;
-      top: -10px; /* Adjust this value if needed */
+      top: -20px; 
     }
 
     .logo {
@@ -72,7 +73,7 @@
     }
 
     @media (max-width: 500px) {
-      .card { padding: 25px 20px; }
+      .card { padding: 25px 20px; top: -10px; }
       h1 { font-size: 22px; }
       .title { font-size: 16px; }
       .contact-item { font-size: 16px; }
@@ -88,6 +89,7 @@
 <body>
   <div class="card">
 
+    <!-- REMAX LOGO -->
     <img src="https://remaxcaborealestate.com/images/brand/remax_cabosanctuary.svg"
          alt="RE/MAX Logo"
          class="logo" />
@@ -113,4 +115,20 @@
       Chat via WhatsApp
     </a>
 
-    <!-- IN
+    <!-- INSTAGRAM -->
+    <a href="https://www.instagram.com/baja_kennyrealestate" class="contact-item" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram Icon">
+      Instagram Profile
+    </a>
+
+    <!-- VIEW LISTINGS (REMAX DIRECT PROFILE) -->
+    <a href="https://global.remax.com/en/agents/mexico/san-jose-del-cabo/kenneth-gehlhoff/1001122140"
+       class="contact-item"
+       target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/1946/1946433.png" alt="Listings Icon">
+      View My Listings
+    </a>
+
+  </div>
+</body>
+</html>
