@@ -8,7 +8,7 @@
   function setup() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+    drops = Array.from({ length: Math.floor(canvas.width / fontSize) }, () => Math.random() * -100);
   }
 
   function draw() {
