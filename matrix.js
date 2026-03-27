@@ -21,7 +21,7 @@
       if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
       drops[i] += 0.3;
     }
-    setTimeout(() => requestAnimationFrame(draw), 80);
+    setTimeout(() => requestAnimationFrame(draw), 20);
   }
 
   setup();
