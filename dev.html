@@ -9,13 +9,13 @@
   <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 
   <!-- Primary Meta -->
-  <meta name="description" content="Your one stop shop for local Baja news, weather, and hurricane tracking. Based in La Paz, BCS." />
-  <meta name="keywords" content="Baja, La Paz, Baja California Sur, weather, news, hurricane, house sitting, nomad" />
+  <meta name="description" content="Baja news, weather, and hurricane tracking. Based in La Paz, BCS." />
+  <meta name="keywords" content="Baja, weather, news, hurricane" />
   <meta name="author" content="The Baja Nomad" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="The Baja Nomad" />
-  <meta property="og:description" content="Your one stop shop for local Baja news, weather, and hurricane tracking. Based in La Paz, BCS." />
+  <meta property="og:description" content="Baja news, weather, and hurricane tracking. Based in La Paz, BCS." />
   <meta property="og:image" content="https://the-baja-nomad.vercel.app/social-preview.png" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://the-baja-nomad.vercel.app" />
@@ -23,7 +23,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The Baja Nomad" />
-  <meta name="twitter:description" content="Your one stop shop for local Baja news, weather, and hurricane tracking." />
+  <meta name="twitter:description" content="Baja news, weather, and hurricane tracking." />
   <meta name="twitter:image" content="https://the-baja-nomad.vercel.app/social-preview.png" />
 
   <link rel="stylesheet" href="styles.css" />
@@ -47,18 +47,55 @@
       height: min(38vw, 160px);
     }
 
+    /* Small phones portrait */
     @media (max-width: 380px) {
       header { font-size: 1.6rem; }
       .button-grid { gap: 1.2rem; }
     }
 
-    @media (min-width: 600px) {
+    /* Phone landscape */
+    @media (max-height: 500px) and (orientation: landscape) {
+      header { font-size: 1.4rem; margin-bottom: 0.75rem; }
       .button-grid {
         grid-template-columns: repeat(4, 1fr);
-        max-width: 700px;
+        max-width: 100%;
+        width: 95vw;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .icon-btn {
+        width: min(18vw, 90px);
+        height: min(18vw, 90px);
       }
     }
 
+    /* Tablet portrait */
+    @media (min-width: 600px) and (orientation: portrait) {
+      .button-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 700px;
+        gap: 2rem;
+      }
+      .icon-btn {
+        width: min(20vw, 150px);
+        height: min(20vw, 150px);
+      }
+    }
+
+    /* Tablet landscape */
+    @media (min-width: 800px) and (orientation: landscape) {
+      .button-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 800px;
+        gap: 2.5rem;
+      }
+      .icon-btn {
+        width: 160px;
+        height: 160px;
+      }
+    }
+
+    /* Desktop */
     @media (min-width: 1024px) {
       .button-grid {
         grid-template-columns: repeat(4, 1fr);
