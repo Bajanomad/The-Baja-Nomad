@@ -4,72 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Reviews - The Baja Nomad</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- Primary Meta -->
+  <meta name="description" content="Reviews for the Baja Nomad house sitting service in La Paz, BCS." />
+  <meta name="keywords" content="Baja, house sitting, reviews" />
+  <meta name="author" content="The Baja Nomad" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Reviews - The Baja Nomad" />
+  <meta property="og:description" content="Reviews for the Baja Nomad house sitting service in La Paz, BCS." />
+  <meta property="og:image" content="https://the-baja-nomad.vercel.app/social-preview.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://the-baja-nomad.vercel.app/reviews.html" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Reviews - The Baja Nomad" />
+  <meta name="twitter:description" content="Reviews for the Baja Nomad house sitting service in La Paz, BCS." />
+  <meta name="twitter:image" content="https://the-baja-nomad.vercel.app/social-preview.png" />
+
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+  <link rel="stylesheet" href="styles.css" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-      background: black;
-      font-family: 'Share Tech Mono', monospace;
-      color: #39ff14;
-      overflow: hidden;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    .back-arrow {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      width: 40px;
-      height: 40px;
-      z-index: 999;
-      background: black;
-      border: 2px solid #39ff14;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 8px #39ff14aa;
-      transition: all 0.2s ease-in-out;
-      text-decoration: none;
-    }
-
-    .back-arrow:hover {
-      transform: scale(1.1);
-      border-color: #2ecc40;
-      box-shadow: 0 0 16px #2ecc40cc;
-    }
-
-    .back-arrow img {
-      width: 20px;
-      height: 20px;
-      filter: drop-shadow(0 0 2px #39ff14);
-    }
-
     .content {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       overflow-y: auto;
-      z-index: 1;
-      background: rgba(0, 0, 0, 0.75);
-      padding: 5rem 2rem 2rem 2rem;
-      display: flex;
-      flex-direction: column;
+      padding-top: 5rem;
       align-items: center;
     }
 
@@ -133,7 +93,7 @@
       box-shadow: 0 0 10px #2ecc40aa;
     }
 
-    button {
+    button[type="submit"] {
       background: #39ff14;
       color: black;
       padding: 0.8rem;
@@ -148,14 +108,18 @@
       transition: all 0.2s ease-in-out;
     }
 
-    button:hover {
+    button[type="submit"]:hover {
       background: #2ecc40;
       box-shadow: 0 0 20px #2ecc40cc;
     }
+
+    @media (orientation: landscape) {
+      p.description { font-size: 1.4rem; margin-bottom: 1rem; }
+    }
   </style>
 </head>
-<body>
 
+<body>
   <canvas id="matrix"></canvas>
 
   <a href="index.html" title="Back to Main" class="back-arrow">
@@ -165,12 +129,12 @@
   <div class="content">
     <p class="description">The good, the bad, and the brutally honest.</p>
 
-    <!-- === Reviews Display Section (Manually Add Reviews Below) === -->
     <div class="reviews-section">
       <div class="review">
-        <p class="review-text">"I’ve had more than 15 years of working with caretakers on multiple properties and David is the most communicative and responsive I’ve ever had. He is great at listening and following instruction no matter how complicated or confusing it might be. He has proven to be extremely committed to caring for my property and pets. He has exceeded my expectations on many occasions by identifying areas that needed attention and cleaning them up or by spotting things that could use some work and offering to fix them. I feel at ease knowing that David is at my property, maintaining everything and taking better care of the place than I do myself!"</p>
+        <p class="review-text">"I've had more than 15 years of working with caretakers on multiple properties and David is the most communicative and responsive I've ever had. He is great at listening and following instruction no matter how complicated or confusing it might be. He has proven to be extremely committed to caring for my property and pets. He has exceeded my expectations on many occasions by identifying areas that needed attention and cleaning them up or by spotting things that could use some work and offering to fix them. I feel at ease knowing that David is at my property, maintaining everything and taking better care of the place than I do myself!"</p>
         <p class="review-author">Dan</p>
       </div>
+    </div>
 
     <p class="description">Tell it like it is. I love the praise, but I can take a punch too.</p>
 
@@ -198,44 +162,6 @@
     </form>
   </div>
 
-  <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "アァイィウヴエカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789";
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#39ff14";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 35);
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
-
+  <script src="matrix.js"></script>
 </body>
 </html>
